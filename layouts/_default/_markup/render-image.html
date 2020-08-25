@@ -1,0 +1,21 @@
+{{ $name := .Destination | replaceRE "../../../images/" "" | replaceRE ".jpeg" "" | replaceRE ".jpg" "" | replaceRE ".JPG" "" | replaceRE ".JPG" "" }}
+{{ $alt := .PlainText | safeHTML }}
+
+{{ $img := $name | printf "/static/img/%s-560.jpg" }}
+{{ $imgData := imageConfig $img }}
+
+<figure>
+    <picture data-original=/img/{{ $name }} data-figcaption="{{ if .Title }}{{ with .Title}}{{ . }}{{ end }}{{ else }}{{ $alt }}{{ end }}">
+        <source srcset="/img/{{ $name }}-560.webp, /img/{{ $name }}-1120.webp 2x,/img/{{ $name }}-1680.webp 3x" width={{ $imgData.Width }} height={{ $imgData.Height }} decoding=async loading=lazy type=image/webp>
+        {{ if findRE "png" .Destination|urlize }}
+            <img src="/img/{{ $name }}.png" srcset="/img/{{ $name }}-1120.png 2x,/img/{{ $name }}-1680.png 3x" width={{ $imgData.Width }} height={{ $imgData.Height }} decoding=async loading=lazy type=image/webp>
+        {{ else if findRE "gif" .Destination|urlize }}
+            <img src="/img/{{ $name }}.gif" srcset="/img/{{ $name }}-1120.gif 2x,/img/{{ $name }}-1680.gif 3x" width={{ $imgData.Width }} height={{ $imgData.Height }} decoding=async loading=lazy type=image/webp>
+        {{ else }}
+            <img src="/img/{{ $name }}.jpg" srcset="/img/{{ $name }}-1120.jpg 2x,/img/{{ $name }}-1680.jpg 3x" width={{ $imgData.Width }} height={{ $imgData.Height }} decoding=async loading=lazy type=image/webp>
+        {{ end }}
+    </picture>
+    {{ if .Title }}
+    <figcaption>{{ with .Title}}{{ . }}{{ end }}{{ else }}{{ $alt }}</figcaption>
+    {{ end }}
+</figure>

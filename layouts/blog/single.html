@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang=ja>
+<head>
+  <link rel="stylesheet" href="/base.css?20200819">
+  <link rel="stylesheet" href="/post.css?20200819">
+  <title>{{ .Title }}｜2001Y.me</title>
+  <meta name="robots" content="index,follow,archive">
+  {{ partial "head.html" . }}
+  <link rel="canonical" href="https://2001y.me{{ .Permalink }}">
+  <meta name="description" content="{{ .Content | plainify | truncate 200 }}"> 
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://2001y.me{{ .Permalink }}" />
+  <meta property="og:title" content="{{ .Title }}｜2001Y.me" />
+  <meta property="og:description" content="{{ .Content | plainify | truncate 200 }}">
+  <meta property="og:image" content="https://2001y.me/img/{{ .Params.img }}.jpg" />
+  <link rel="dns-prefetch" href="//www.googletagservices.com">
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+  <link rel="dns-prefetch" href="//adservice.google.co.jp">
+  <link rel="dns-prefetch" href="//adservice.google.com">
+  <link rel="prerender" href="{{ with .Site.RegularPages.Related . | first 1 }}{{ range . }}{{ .Permalink }}{{ end }}{{ end }}">
+  <script defer>let title ="{{ .File.TranslationBaseName }}";</script>
+  <script defer src=/script.min.js?20200705></script>
+  <script defer src=/cursor.min.js?20200819></script>
+  <script defer src=/quicklink.min.js?20200705></script>
+  {{ if findRE "twitter-tweet" .Content }}
+    <script async src=//platform.twitter.com/widgets.js></script>
+  {{ end }}
+  {{ if not .Site.IsServer }}
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  {{ end }}
+</head>
+<body id=body ontouchstart>
+  <nav id=bar>
+    <a href=/blog title="2001Y.me｜Macだったり、Webデザインだったり、カメラだったり。" class=logo><h4>2001Y Blog</h4></a>
+    <a href=/ title="2001Y Portfolio">Portfolio</a>
+    <a href=/contact title="2001Y Contact">Contact</a>
+    <time>{{ .Date.Format "2006.01.02" }}</time>
+  </nav>
+  <a href=/blog title="2001Y.me｜Macだったり、Webデザインだったり、カメラだったり。" id=top>
+    &#xe904;
+  </a>
+  <header id=header>
+    <h1>{{ .Title }}</h1>
+    <div id=category class={{ range .Params.categories }}{{ . }}{{ end }}>
+      <a href=/blog/gadget class="category Gadget" data-tooltip=ガジェット title=ガジェット｜2001Y.me></a><a href=/blog/camera class="category Camera" data-tooltip=カメラ title=カメラ｜2001Y.me></a><a href=/blog/web class="category Web" data-tooltip=Web title=Web｜2001Y.me></a><a href=/blog/other class="category Other" data-tooltip=その他 title=その他｜2001Y.me></a>
+    </div>
+  </header>
+  <main id=main>
+    <article id=article>
+      {{ if .Params.img }}
+        <picture id=tmb data-original=/img/{{ .Params.img }} data-figcaption="{{ .Title }}｜2001Y.me">
+            <source srcset="/img/{{ .Params.img }}-700.webp, /img/{{ .Params.img }}-1400.webp 2x,/img/{{ .Params.img }}-2100.webp 3x" width=700 height=368 decoding=async loading=lazy type=image/webp>
+            <img src=/img/{{ .Params.img }}-700.jpg srcset="/img/{{ .Params.img }}-1400.jpg 2x,/img/{{ .Params.img }}-2100.jpg 3x" width=700 height=368 alt="{{ .Title }}｜2001Y.me" decoding=async loading=lazy>
+        </picture>
+      {{ end }}
+      {{ $p_tag := findRE "<h2>(.|\n)+?</h2>" .Content }}
+      {{ $position := div (len $p_tag) 2 }}
+      {{ $contents := split .Content "\n" }}
+      {{ $.Scratch.Set "Content" "" }}
+      {{ $.Scratch.Set "Counter" 0 }}
+      {{ range $contents }}
+          {{ if hasPrefix . "<h2>" }}
+              {{ $.Scratch.Add "Counter" 1 }}
+              {{ if eq ($.Scratch.Get "Counter") $position }}
+                  {{ $.Scratch.Add "Content" (partial "ad.html") }}
+              {{ end }}
+          {{ end }}
+          {{ $.Scratch.Add "Content" (print . "\n") }}
+      {{ end }}
+      {{ $.Scratch.Get "Content" | safeHTML }}
+      <!-- .Content | replaceRE "(<h[1-9] id=\"([^\"]+)\".+)(</h[1-9]+>)" "${1}&nbsp;<a class=\"headline-hash\" href=\"#${2}\">#</a> ${3}" | safeHTML  -->
+      <div id=Voting class=normal>
+        <button onclick="block();" id="Close" aria-label=閉じる></button>
+        <span id=votingText>記事への評価をおねがいします！</span>
+        <div id=voting-box>
+          <button onclick="voting('good');" id=goodElem aria-label=いいね>いいね</button>
+          <button onclick="voting('bad');" id=badElem aria-label=イマイチ>イマイチ</button>
+        </div>
+      </div>
+    </article>
+    <aside>
+      <div class=ad>
+        <ins class="adsbygoogle" style="display:block;width:200px;height:200px" data-ad-client="ca-pub-3750999099107987" data-ad-slot="6726245863"></ins>
+        <ins class="adsbygoogle" style="display:block;width:200px;height:200px" data-ad-client="ca-pub-3750999099107987" data-ad-slot="3114303912"></ins>
+      </div>
+      <h4 id=related><a href="/blog/{{ if .Params.categories }}{{ range .Params.categories }}{{ . | urlize }}{{ end }}{{ end }}" title="">あなたにおすすめ</a></h4>
+      {{ if .Site.RegularPages.Related . }}
+        {{ with .Site.RegularPages.Related . | first 3 }}
+          {{ range . }}
+          <a href={{ .Permalink }} title="{{ .Title }}｜2001Y.me">
+            <article class="post {{ if .Params.categories }}{{ range .Params.categories }}{{ . }}{{ end }}{{ end }}">
+              <picture class=post-tmb>
+                <source srcset="/img/{{ .Params.img }}-120.webp, /img/{{ .Params.img }}-240.webp 2x,/img/{{ .Params.img }}-360.webp 3x" decoding=async loading=lazy type=image/webp>
+                <img src=/img/{{ .Params.img }}-120.jpg srcset="/img/{{ .Params.img }}-240.jpg 2x,/img/{{ .Params.img }}-360.jpg 3x" alt="{{ .Title }}｜2001Y.me" decoding=async loading=lazy>
+              </picture>
+              <div class=post-data>
+                <h2>{{ .Title }}</h2>
+                <div class=post-meta>
+                  <time>{{ .Date.Format "2006/01/02" }}</time>・{{ if .Params.categories }}{{ range .Params.categories }}{{ . }}{{ end }}{{ end }}
+                  {{ if ne (.Date.Format ( .Site.Params.dateformat | default "2006年1月2日")) (.Lastmod.Format ( .Site.Params.dateformat | default "2006年1月2日"))}}
+                      <time datetime="{{ .Lastmod.Format "2006-01-02T15:04:05JST" }}">{{ .Lastmod.Format ( .Site.Params.dateformat | default "2006年1月2日") }}</time>
+                  {{ end }}
+                </div>
+                <p>{{ .Content | plainify | truncate 50 }}</p>
+              </div>
+            </article>
+          </a>
+          {{ end }}
+        {{ else }}
+          {{ range first 3 (where $.Site.RegularPages "Section" "blog") }}
+          <a href={{ .Permalink }} title="{{ .Title }}｜2001Y.me">
+            <article class="post {{ if .Params.categories }}{{ range .Params.categories }}{{ . }}{{ end }}{{ end }}">
+              <picture class=post-tmb>
+                <source srcset="/img/{{ .Params.img }}-120.webp, /img/{{ .Params.img }}-240.webp 2x,/img/{{ .Params.img }}-360.webp 3x" decoding=async loading=lazy type=image/webp>
+                <img src=/img/{{ .Params.img }}-120.jpg srcset="/img/{{ .Params.img }}-240.jpg 2x,/img/{{ .Params.img }}-360.jpg 3x" alt="{{ .Title }}｜2001Y.me" decoding=async loading=lazy>
+              </picture>
+              <div class=post-data>
+                <h2>{{ .Title }}</h2>
+                <div class=post-meta>
+                  <time>{{ .Date.Format "2006/01/02" }}</time>・{{ if .Params.categories }}{{ range .Params.categories }}{{ . }}{{ end }}{{ end }}
+                  {{ if ne (.Date.Format ( .Site.Params.dateformat | default "2006年1月2日")) (.Lastmod.Format ( .Site.Params.dateformat | default "2006年1月2日"))}}
+                      <time datetime="{{ .Lastmod.Format "2006-01-02T15:04:05JST" }}">{{ .Lastmod.Format ( .Site.Params.dateformat | default "2006年1月2日") }}</time>
+                  {{ end }}
+                </div>
+                <p>{{ .Content | plainify | truncate 50 }}</p>
+              </div>
+            </article>
+          </a>
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    </aside>
+  </main>
+  <aside id=fixed>
+    <a href=/blog title="2001Y.me｜Macだったり、Webデザインだったり、カメラだったり。">
+      &#xe904;
+    </a>
+  </aside>
+  <picture id=lightbox class=close>
+    <source type=image/webp alt=lightbox id=lightbox-webp>
+    <img alt=lightbox id=lightbox-jpeg>
+    <figcaption id=lightbox-figcaption></figcaption>
+  </picture>
+  <div id="Top"></div>
+  <div id="Bottom"></div>
+  <footer>
+    <ol id=breadcrumb>
+      <li><a class=logo href=/ title="2001Y Portfolio"></a></li>
+      <li><a href=/blog title="2001Y.me｜Macだったり、Webデザインだったり、カメラだったり。">Blog</a></li>
+      <li><a href=/blog/{{ range .Params.categories }}{{ .| urlize }}{{ end }} title="Camera｜2001Y.me">{{ range .Params.categories }}{{ . }}{{ end }}</a></li>
+    </ol>
+  {{ partial "footer.html" . }}
+  <form class=search-box action=/blog/ method=get>
+      <input class=search name=s type=search>
+      <input class=submit type=submit value="&#xe901;">
+  </form>
+</footer>
+</body>
+<div id="cursor"></div>
+<svg style="height:0;width:0;position:fixed">
+  <clipPath id="tmb" clipPathUnits="objectBoundingBox">
+    <path d="M.8,.7c0,.15-.1,.3-.3,.3S.2,.85,.2,.7c0-.3,.3-.7,.3-.7S.8,.4,.8,.7z"/>
+  </clipPath>
+</svg>
+{{ if findRE "highlight" .Content }}
+  <link rel="stylesheet" href="/syntax.css">
+{{ end }}
+{{ if not .Site.IsServer }}
+  <script>
+    (function(e,t,n,i,s,a,c){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)}
+    ;a=t.createElement(i);c=t.getElementsByTagName(i)[0];a.async=true;a.src=s
+    ;c.parentNode.insertBefore(a,c)
+    })(window,document,"galite","script","/ga-lite.min.js");
+    galite('create', 'UA-68964193-14', 'auto');
+    galite('send', 'pageview');
+    window.onload = setTimeout(
+      function() {
+        let ads = document.querySelectorAll(".adsbygoogle");
+        ads.forEach(function(){
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        });
+      },3000
+    );
+  </script>
+{{ end }}
+<script type=application/ld+json>
+{
+    "@context" : "http://schema.org",
+    "@type" : "Article",
+    "headline" : "{{ .Title }}",
+    "description": {{ .Content | plainify | truncate 200 }},
+    "image": [
+      "https://2001y.me/seo/1*1.png"
+    ],
+    "publisher" : {
+        "@type" : "Organization",
+        "name" : "2001Y.me",
+        "logo" : {
+            "@type" : "ImageObject",
+            "url" : "https://2001y.me/blog/logo.jpg",
+            "height" : 300,
+            "width" : 400
+        }
+    },
+    "author" : {
+        "@type" : "Person",
+        "name" : "2001Y"
+    },
+    "datePublished": {{ .Date.Format "2006/01/02" }},
+    "dateModified": {{ .Lastmod.Format "2006/01/02" }},
+    "mainEntityOfPage": {{ .Permalink | printf "https://2001y.me%s" }}
+}
+</script>
+<script type=application/ld+json>
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "name": "ブログ",
+    "item": "https://2001y.me/blog"
+  },{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "{{ range .Params.categories }}{{ . }}{{ end }}",
+    "item": "https://2001y.me/blog/{{ range .Params.categories }}{{ . | urlize }}{{ end }}"
+  },{
+    "@type": "ListItem",
+    "position": 3,
+    "name": "{{ .Title }}",
+    "item": {{ .Permalink | printf "https://2001y.me%s" }}
+  }]
+}
+</script>
+<script type=application/ld+json>
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": "http://2001y.me",
+  "logo": "https://2001y.me/seo/1*1.png"
+}
+</script>
+<script type=application/ld+json>    
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://2001y.me",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://2001y.me/?s={query}",
+    "query-input": "required name=query"
+  }
+}
+</script>
+</html>

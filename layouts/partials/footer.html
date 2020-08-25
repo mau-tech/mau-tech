@@ -1,0 +1,32 @@
+  <div id=left>
+      <h6>カテゴリ</h6>
+      <ul>
+        <li><a href="/blog/gadget" title="ガジェット｜2001Y.me">ガジェット</a></li>
+        <li><a href="/blog/camera" title="カメラ｜2001Y.me">カメラ</a></li>
+        <li><a href="/blog/web" title="Web｜2001Y.me">Web</a></li>
+        <li><a href="/blog/other" title="その他｜2001Y.me">その他</a></li>
+      </ul>
+  </div>
+  <div id=center>
+      <h6>タグ</h6>
+      <ul id=tag>
+        {{ if lt 0 (len .Site.Taxonomies.tags) }}
+          {{ range .Site.Taxonomies.tags.ByCount }}
+            <li>
+              <a href="/tags/{{ .Name }}">
+                {{ .Name }}<span>({{ .Count }})</span>
+              </a>
+            </li>
+          {{ end }}
+        {{ end }}
+      </ul>
+  </div>
+  <div id=right>
+    <div>
+      <h6>2001Y</h6>
+      <a href=//twitter.com/2001yMe title=2001Y(@Y20010920T)｜Twitter><span class=twitter>&#xea96;</span></a>
+      <a href=//21y.in/insta title=2001Y(@Y20010920T)｜Instagram><span class=insta>&#xea92;</span></a>
+    </div>
+    <img id=portfolio src=/profile-48.jpg
+                      srcset="/profile-96.jpg 2x,/profile-144.jpg 3x" width=48px height=48px alt="2001Y" decoding=async loading=lazy>
+  </div>

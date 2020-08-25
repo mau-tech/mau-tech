@@ -1,0 +1,22 @@
+enableRobotsTXT = true
+hasCJKLanguage = true
+# enableGitInfo = true
+pygmentsUseClasses = true
+pygmentsCodefences = true
+pygmentsStyle = "monokai"
+paginate = 5
+canonifyURLs = true
+# UglyURLs = true
+
+[taxonomies]
+tag = "tags"
+category = "categories"
+
+[blackfriday]
+hrefTargetBlank = true
+
+[params]
+dateformat = "2006年1月2日"
+
+[markup.goldmark.renderer]
+  unsafe = true

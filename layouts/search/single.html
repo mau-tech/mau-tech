@@ -1,0 +1,6 @@
+{{/* エスケープ処理（改行を空白化、前後の空白削除、連続する空白を集約） */}}
+{{ define "escape" }}
+  {{- trim (replace . "\n" " ") " " | replaceRE " +" " " | jsonify -}}
+{{ end }}
+var data = [{{ range $index, $page := where .Site.Pages "Section" "blog"}}
+{{ if ne $index 0 }},{{ end }}{url: "{{ $page.Permalink }}",title: "{{ $page.Title }}",img: {{ .Params.img | jsonify }},date: {{ $page.Date.Format "2006/01/02" | jsonify  }},category: {{ if .Params.categories }}{{ range .Params.categories }}{{ . | jsonify }}{{ end }}{{ else }}""{{ end }},body: {{ template "escape" (printf "%s %s" $page.Title $page.Plain) }}}{{ end }}]

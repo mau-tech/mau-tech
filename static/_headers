@@ -1,0 +1,47 @@
+/*
+    Accept-Encoding: gzip, deflate, br
+    Cache-Control: max-age=604800, immutable;
+    Strict-Transport-Security: max-age=63072000;includeSubDomains; preload
+    X-XSS-Protection: 1; mode=block
+    X-Content-Type-Options: nosniff
+    
+    Link: </base.css>; rel=preload; as=style;
+    
+    Link: </ga-lite.min.js>; rel=preload; as=script;
+    Link: </quicklink.min.js>; rel=preload; as=script;
+
+    Link: </font/m+r1c-light-sub.woff2>; rel=preload; as=font; type=font/woff2;
+    Link: </font/m+r1c-medium-sub.woff2>; rel=preload; as=font; type=font/woff2;
+
+    Link: </font/icon.woff2>; rel=preload; as=font; type=font/woff2;
+    
+/contact
+    Link: </contact.css>; rel=preload; as=style;
+    Link: </font/athens-regular-italic-sub.woff2>; rel=preload; as=font; type=font/woff2;
+
+/blog
+    Link: </list.css>; rel=preload; as=style;
+    Link: </font/athens-regular-italic-sub.woff2>; rel=preload; as=font; type=font/woff2;
+    Link: </search.min.js>; rel=preload; as=script;
+    Link: </data.min.js>; rel=preload; as=script;
+    
+/blog/gadget
+    Link: </list.css>; rel=preload; as=style;
+    Link: </font/athens-regular-italic-sub.woff2>; rel=preload; as=font; type=font/woff2;
+    Link: </search.min.js>; rel=preload; as=script;
+    Link: </data.min.js>; rel=preload; as=script;
+    
+/blog/web
+    Link: </list.css>; rel=preload; as=style;
+    Link: </font/athens-regular-italic-sub.woff2>; rel=preload; as=font; type=font/woff2;
+    Link: </search.min.js>; rel=preload; as=script;
+    Link: </data.min.js>; rel=preload; as=script;
+    
+/blog/other
+    Link: </list.css>; rel=preload; as=style;
+    Link: </font/athens-regular-italic-sub.woff2>; rel=preload; as=font; type=font/woff2;
+    Link: </search.min.js>; rel=preload; as=script;
+    Link: </data.min.js>; rel=preload; as=script;
+
+/blog/*/*
+    Link: </post.css>; rel=preload; as=style;
